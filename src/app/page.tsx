@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import Image from 'next/image';
 
 const Page = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -18,31 +19,77 @@ const Page = () => {
   const progressPercentage = ((currentStep + 1) / 4) * 100;
 
   return (
-    <div className="size-full flex flex-col justify-between p-4 items-center h-screen">
-      {/* Progress Bar */}
-      <Progress value={progressPercentage} className="w-full mb-6" />
+    <div className="size-full p-6 flex flex-col justify-between items-center">
+      <Progress value={progressPercentage} className="w-full mb-6 [&>*]:bg-indigo-600 bg-indigo-200"  />
 
-      {/* Step Content */}
-      <div className="flex flex-col items-center mb-6 w-full">
-        {currentStep === 0 && <p>This is the content for Step 1</p>}
-        {currentStep === 1 && <p>This is the content for Step 2</p>}
-        {currentStep === 2 && <p>This is the content for Step 3</p>}
-        {currentStep === 3 && <p>This is the content for Step 4</p>}
+      <div className="size-full flex flex-col items-center mb-6">
+        <h1 className='text-2xl mb-6'>Welcome to <span className='font-semibold text-indigo-700'>SafeBite</span></h1>
+        {currentStep === 0 && 
+          <div className='w-full space-y-6 text-center'>
+            <Image
+              src="/images/auth-image.svg"
+              alt="SafeBite"
+              className="w-full"
+              height={512}
+              width={512}
+            />
+            <h1 className='font-semibold text-xl'>Enjoy your meal time</h1>
+            <p className='text-lg'>Just relax and not overthink what to eat. This is in our side with our personalized meal plans just prepared and adapted to your needs.</p>
+          </div>
+        }
+        {currentStep === 1 && 
+          <div className='w-full space-y-6 text-center'>
+            <Image
+              src="/images/auth-image.svg"
+              alt="SafeBite"
+              className="w-full"
+              height={512}
+              width={512}
+            />
+            <h1 className='font-semibold text-xl'>Control what you eat</h1>
+            <p className='text-lg'>Easily monitor your nutrition  and stick to a healthy lifestyle with customized meal plans and insights.</p>
+          </div>
+        }
+        {currentStep === 2 && 
+          <div className='w-full space-y-6 text-center'>
+            <Image
+              src="/images/auth-image.svg"
+              alt="SafeBite"
+              className="w-full"
+              height={512}
+              width={512}
+            />
+            <h1 className='font-semibold text-xl'>Find the perfect recipe</h1>
+            <p className='text-lg'>Discover the best recipes that define your everyday meals. Get step-by-step food preparation process and start your journey to wellness.</p>
+          </div>
+        }
+        {currentStep === 3 && 
+          <div className='w-full space-y-6 text-center'>
+            <Image
+              src="/images/auth-image.svg"
+              alt="SafeBite"
+              className="w-full"
+              height={512}
+              width={512}
+            />
+            <h1 className='font-semibold text-xl'>Plan, eat, and thrive with us!</h1>
+            <p className='text-lg'>From meal planning to healthy eating, we are here to guide you toward a thriving and balanced daily routine.</p>
+          </div>
+        }
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex w-full gap-4 justify-between">
+      <div className="flex w-full justify-between">
         <Button 
           onClick={handlePreviousStep} 
           disabled={currentStep === 0} 
-          className="w-1/2"
+          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base"
         >
           Previous
         </Button>
         <Button 
           onClick={handleNextStep} 
           disabled={currentStep === 3} 
-          className="w-1/2"
+          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base"
         >
           Next
         </Button>
