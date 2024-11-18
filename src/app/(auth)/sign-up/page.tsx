@@ -24,6 +24,7 @@ import { z } from "zod";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { sendVerificationCode, checkVerificationCode } from "@/services/auth";
+import { Progress } from "@/components/ui/progress";
 
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -61,7 +62,7 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
   return (
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 w-full space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -146,7 +147,7 @@ const Step2 = ({ email, onNext }: { email: string; onNext: () => void }) => {
   return (
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 w-full space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
           <FormField
             control={form.control}
             name="pin"
@@ -220,13 +221,20 @@ const Page = () => {
     setStep((prev) => prev + 1);
   };
 
+  const progressPercentage = (step / 3) * 100;
+
   return (
-    <div className="size-full">
+    <div className="size-full p-6">
+      <div className="px-4">
+        <Progress value={progressPercentage} className="w-full [&>*]:bg-indigo-600 bg-indigo-200" />
+      </div>
+
       {step === 1 && <Step1 onNext={handleNextStep} />}
       {step === 2 && <Step2 email={email} onNext={() => handleNextStep()} />}
-      {step === 3 && <Step3 />}
+      {step === 4 && <Step3 />}
     </div>
   );
 };
+
 
 export default Page;
