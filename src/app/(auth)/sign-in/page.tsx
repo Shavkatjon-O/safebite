@@ -66,7 +66,7 @@ const Page = () => {
   return (
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="py-6 max-w-sm w-full px-6 space-y-3 shadow-sm rounded-md border">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 w-full space-y-3 rounded-md">
           <FormField
             control={form.control}
             name="email"
@@ -77,7 +77,7 @@ const Page = () => {
                   <Input
                     type="email"
                     placeholder="Email" {...field}
-                    className="h-12"
+                    className="h-14"
                   />
                 </FormControl>
                 <FormMessage />
@@ -95,7 +95,7 @@ const Page = () => {
                   <Input
                     type="password"
                     placeholder="Password" {...field}
-                    className="h-12"
+                    className="h-14"
                   />
                 </FormControl>
                 <FormMessage />
@@ -111,7 +111,7 @@ const Page = () => {
 
           <Button
             type="submit"
-            className="w-full h-12 bg-custom hover:bg-indigo-800 font-semibold"
+            className="w-full h-14 bg-custom hover:bg-indigo-800 font-semibold"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
