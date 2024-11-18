@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signIn, signUp } from '@/services/auth';
+import { sendVerificationCode } from "@/services/auth";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
@@ -21,11 +21,6 @@ import Link from "next/link";
 
 const FormSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-  confirmPassword: z.string().min(8, "Password must be at least 8 characters long"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
 });
 
 const Page = () => {
@@ -38,38 +33,29 @@ const Page = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
-      password: "",
-      confirmPassword: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsSubmitting(true);
-    ////////////////// Sign Up Logic //////////////////
     try {
-      const response = await signUp(data.email, data.password);
+      const response = await sendVerificationCode(data.email);
 
       setMessage(response.message);
 
       if (response.success) {
-        const signInResponse = await signIn(data.email, data.password);
-
-        if (signInResponse.success) {
-          console.log("Sign-up and sign-in successful");
-          router.push("/dashboard/onboarding");
-        } else {
-          console.log("Sign-in failed after sign-up");
-        }
+        console.log("Sign-up successful");
+        router.push("/verify-otp");
       } else {
         console.log("Sign-up failed");
       }
     } catch (error) {
       console.log("Error during sign-up:", error);
+
       setMessage("An error occurred during sign-up.");
     } finally {
       setIsSubmitting(false);
     }
-    /////////////////////////////////////////////////////
   };
 
   return (
@@ -94,42 +80,6 @@ const Page = () => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password" {...field}
-                    className="h-12"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Confirm Password" {...field}
-                    className="h-12"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           {message && (
             <div className="flex justify-center w-full bg-slate-100 py-2 rounded-md">
               <span className="text-indigo-500">{message}</span>
@@ -144,7 +94,7 @@ const Page = () => {
             {isSubmitting ? (
               <Loader2 className="animate-spin text-white" />
             ) : (
-              "Sign Up"
+              "Continue"
             )}
           </Button>
 

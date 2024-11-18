@@ -37,7 +37,7 @@ const sendVerificationCode =  async (email: string) => {
 const checkVerificationCode = async (email: string, code: string) => {
   const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/check_verification/`, {
     email: email,
-    code: code
+    otp: code
   });
 
   if (response.status === 200) {
