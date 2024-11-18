@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
+} from "@/components/ui/input-otp";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,10 +23,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
-import { 
-  sendVerificationCode,
-  checkVerificationCode,
-} from "@/services/auth";
+import { sendVerificationCode, checkVerificationCode } from "@/services/auth";
 
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -45,7 +42,6 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
 
   const onSubmit = async (data: z.infer<typeof Step1FormSchema>) => {
     setIsSubmitting(true);
-
     try {
       const response = await sendVerificationCode(data.email);
       setMessage(response.message);
@@ -65,7 +61,7 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
   return (
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 w-full space-y-4 rounded-md">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 w-full space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -75,7 +71,8 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
                 <FormControl>
                   <Input
                     type="email"
-                    placeholder="Email" {...field}
+                    placeholder="Email"
+                    {...field}
                     className="h-14"
                   />
                 </FormControl>
@@ -100,8 +97,10 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
             )}
           </Button>
           <div className="w-full flex justify-center">
-            <span className="text-slate-500">Already have account?</span>
-            <Link href="/sign-up" className="text-custom ml-1">Sign In</Link>
+            <span className="text-slate-500">Already have an account?</span>
+            <Link href="/sign-up" className="text-custom ml-1">
+              Sign In
+            </Link>
           </div>
         </form>
       </Form>
@@ -110,12 +109,12 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
 };
 
 const Step2FormSchema = z.object({
-  pin: z.string().min(6, {
+  pin: z.string().length(6, {
     message: "Your one-time password must be 6 characters.",
   }),
-})
+});
 
-const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
+const Step2 = ({ email, onNext }: { email: string; onNext: () => void }) => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -124,11 +123,10 @@ const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
     defaultValues: {
       pin: "",
     },
-  })
+  });
 
   const onSubmit = async (data: z.infer<typeof Step2FormSchema>) => {
     setIsSubmitting(true);
-
     try {
       const response = await checkVerificationCode(email, data.pin);
       setMessage(response.message);
@@ -138,7 +136,7 @@ const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
         console.log("OTP verification failed");
       }
     } catch (error) {
-      console.log("Error during OTP verification:", error);
+      console.error("Error during OTP verification:", error);
       setMessage("An error occurred during verification.");
     } finally {
       setIsSubmitting(false);
@@ -148,7 +146,7 @@ const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
   return (
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 w-full space-y-4">
           <FormField
             control={form.control}
             name="pin"
@@ -158,8 +156,8 @@ const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
                 <FormControl>
                   <InputOTP maxLength={6} {...field}>
                     <InputOTPGroup className="w-full flex justify-between">
-                      <InputOTPSlot index={0} className="w-full h-14 text-lg"/>
-                      <InputOTPSlot index={1} className="w-full h-14 text-lg"/>
+                      <InputOTPSlot index={0} className="w-full h-14 text-lg" />
+                      <InputOTPSlot index={1} className="w-full h-14 text-lg" />
                       <InputOTPSlot index={2} className="w-full h-14 text-lg" />
                       <InputOTPSlot index={3} className="w-full h-14 text-lg" />
                       <InputOTPSlot index={4} className="w-full h-14 text-lg" />
@@ -196,53 +194,19 @@ const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
   );
 };
 
-
-const Step3 = ({ email, onNext }: { email: string, onNext: () => void }) => {
-  const [otp, setOtp] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const response = await checkVerificationCode(email, otp);
-    setLoading(false);
-    setMessage(response.message);
-    if (response.success) {
-      onNext();  // Move to the next step (Post verification)
-    }
-  };
-
-  return (
-    <div>
-      <h2>Enter Verification Code</h2>
-      <form onSubmit={handleVerify}>
-        <input 
-          type="text" 
-          value={otp} 
-          onChange={(e) => setOtp(e.target.value)} 
-          placeholder="Enter OTP" 
-        />
-        <button type="submit" disabled={loading}>Verify</button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
-  );
-};
-
-
-const Step4 = () => {
+const Step3 = () => {
   const router = useRouter();
 
   const handleFinish = () => {
-    // You could also redirect the user to the home page or login
     router.push("/dashboard");
   };
 
   return (
-    <div>
+    <div className="text-center">
       <h2>Signup Complete!</h2>
-      <button onClick={handleFinish}>Go to Dashboard</button>
+      <button onClick={handleFinish} className="mt-4 bg-indigo-600 text-white p-3 rounded">
+        Go to Dashboard
+      </button>
     </div>
   );
 };
@@ -251,17 +215,16 @@ const Page = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
 
-  const handleNextStep = (email: string = "") => {
+  const handleNextStep = (email?: string) => {
     if (email) setEmail(email);
-    setStep(step + 1);
+    setStep((prev) => prev + 1);
   };
 
   return (
     <div className="size-full">
       {step === 1 && <Step1 onNext={handleNextStep} />}
       {step === 2 && <Step2 email={email} onNext={() => handleNextStep()} />}
-      {step === 3 && <Step3 email={email} onNext={() => handleNextStep()} />}
-      {step === 4 && <Step4 />}
+      {step === 3 && <Step3 />}
     </div>
   );
 };
