@@ -89,13 +89,13 @@ const Page = () => {
         <Button 
           onClick={handlePreviousStep} 
           disabled={currentStep === 0} 
-          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base"
+          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base rounded-2xl"
         >
           Previous
         </Button>
         <Button 
           onClick={handleNextStep} 
-          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base"
+          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base rounded-2xl"
         >
           Next
         </Button>
