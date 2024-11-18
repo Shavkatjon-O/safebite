@@ -28,12 +28,11 @@ import {
   checkVerificationCode,
 } from "@/services/auth";
 
-
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
-const Step1 = ({ onNext }: { onNext: () => void }) => {
+const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,7 +50,7 @@ const Step1 = ({ onNext }: { onNext: () => void }) => {
       const response = await sendVerificationCode(data.email);
       setMessage(response.message);
       if (response.success) {
-        onNext();
+        onNext(data.email);
       } else {
         console.log("Sign-up failed");
       }
@@ -110,7 +109,6 @@ const Step1 = ({ onNext }: { onNext: () => void }) => {
   );
 };
 
-
 const Step2FormSchema = z.object({
   pin: z.string().min(6, {
     message: "Your one-time password must be 6 characters.",
@@ -137,11 +135,11 @@ const Step2 = ({ email, onNext }: { email: string, onNext: () => void }) => {
       if (response.success) {
         onNext();
       } else {
-        console.log("Otp verification failed");
+        console.log("OTP verification failed");
       }
     } catch (error) {
-      console.log("Error during sign-up:", error);
-      setMessage("An error occurred during sign-up.");
+      console.log("Error during OTP verification:", error);
+      setMessage("An error occurred during verification.");
     } finally {
       setIsSubmitting(false);
     }
@@ -260,7 +258,7 @@ const Page = () => {
 
   return (
     <div className="size-full">
-      {step === 1 && <Step1 onNext={() => handleNextStep(email)} />}
+      {step === 1 && <Step1 onNext={handleNextStep} />}
       {step === 2 && <Step2 email={email} onNext={() => handleNextStep()} />}
       {step === 3 && <Step3 email={email} onNext={() => handleNextStep()} />}
       {step === 4 && <Step4 />}
