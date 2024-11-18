@@ -4,12 +4,19 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+  const router = useRouter();
+
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1);
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      router.push('/sign-up');
+    }
   };
 
   const handlePreviousStep = () => {
@@ -88,7 +95,6 @@ const Page = () => {
         </Button>
         <Button 
           onClick={handleNextStep} 
-          disabled={currentStep === 3} 
           className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base"
         >
           Next
