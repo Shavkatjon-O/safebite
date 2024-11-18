@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { signIn, signUp } from '@/services/auth';
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
@@ -77,18 +76,6 @@ const Page = () => {
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="py-6 max-w-sm w-full px-6 space-y-3 shadow-sm rounded-md border">
-          <h1 className="text-custom text-2xl font-bold text-center">SafeBite</h1>
-
-          <div>
-            <Image
-              src="/images/auth-image.svg"
-              alt="Auth Image"
-              width={300}
-              height={300}
-              className="w-full"
-            />
-          </div>
-
           <FormField
             control={form.control}
             name="email"
