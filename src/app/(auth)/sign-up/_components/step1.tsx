@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
-import { sendVerificationCode } from "@/services/auth";
+// import { sendVerificationCode } from "@/services/auth";
 
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -36,13 +36,14 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
   const onSubmit = async (data: z.infer<typeof Step1FormSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await sendVerificationCode(data.email);
-      setMessage(response.message);
-      if (response.success) {
-        onNext(data.email);
-      } else {
-        console.log("Sign-up failed");
-      }
+      // const response = await sendVerificationCode(data.email);
+      // setMessage(response.message);
+      // if (response.success) {
+      //   onNext(data.email);
+      // } else {
+      //   console.log("Sign-up failed");
+      // }
+      onNext(data.email);
     } catch (error) {
       console.log("Error during sign-up:", error);
       setMessage("An error occurred during sign-up.");
@@ -91,7 +92,7 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
           </Button>
           <div className="w-full flex justify-center">
             <span className="text-slate-500">Already have an account?</span>
-            <Link href="/sign-up" className="text-custom ml-1">
+            <Link href="/sign-in" className="text-custom ml-1">
               Sign In
             </Link>
           </div>

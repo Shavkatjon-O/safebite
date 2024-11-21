@@ -1,21 +1,119 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-const Step3 = () => {
-  const router = useRouter();
+const Step3 = ({ onNext }: { onNext: () => void }) => {
+  const [formData, setFormData] = useState({
+    height: "",
+    weight: "",
+    gender: "",
+    age: "",
+  });
 
-  const handleFinish = () => {
-    router.push("/dashboard");
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleGenderChange = (gender: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      gender,
+    }));
+  };
+
+  const handleNext = () => {
+    if (formData.height && formData.weight && formData.gender && formData.age) {
+      onNext();
+    } else {
+      alert("Please fill out all fields.");
+    }
   };
 
   return (
-    <div className="text-center">
-      <h2>Signup Complete!</h2>
-      <button onClick={handleFinish} className="mt-4 bg-indigo-600 text-white p-3 rounded">
-        Go to Dashboard
-      </button>
+    <div className="max-w-md mx-auto py-6 px-4">
+      <h2 className="text-lg font-bold mb-4">Physical Profile</h2>
+      <p className="text-sm mb-6">
+        We use RMR (Resting Metabolic Rate) to estimate your calorie budget, which uses height, weight, gender, and age as inputs.
+      </p>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-1" htmlFor="height">
+            Height (cm)
+          </label>
+          <Input
+            id="height"
+            name="height"
+            type="number"
+            value={formData.height}
+            onChange={handleInputChange}
+            placeholder="Enter your height in cm"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1" htmlFor="weight">
+            Weight (kg)
+          </label>
+          <Input
+            id="weight"
+            name="weight"
+            type="number"
+            value={formData.weight}
+            onChange={handleInputChange}
+            placeholder="Enter your weight in kg"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Gender</label>
+          <RadioGroup
+            value={formData.gender}
+            onValueChange={handleGenderChange}
+            className="flex space-x-4"
+          >
+            <RadioGroupItem value="Female" id="female">
+              Female
+            </RadioGroupItem>
+            <RadioGroupItem value="Male" id="male">
+              Male
+            </RadioGroupItem>
+          </RadioGroup>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1" htmlFor="age">
+            Age (years)
+          </label>
+          <Input
+            id="age"
+            name="age"
+            type="number"
+            value={formData.age}
+            onChange={handleInputChange}
+            placeholder="Enter your age in years"
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-between items-center mt-6">
+        <Button variant="outline" className="w-1/3">
+          Previous
+        </Button>
+        <Button
+          onClick={handleNext}
+          className="w-2/3 bg-indigo-600 text-white"
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 };

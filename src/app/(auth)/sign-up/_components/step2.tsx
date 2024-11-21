@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
-import { checkVerificationCode } from "@/services/auth";
+// import { checkVerificationCode } from "@/services/auth";
 
 const Step2FormSchema = z.object({
   pin: z.string().length(6, {
@@ -42,13 +42,16 @@ const Step2 = ({ email, onNext }: { email: string; onNext: () => void }) => {
   const onSubmit = async (data: z.infer<typeof Step2FormSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await checkVerificationCode(email, data.pin);
-      setMessage(response.message);
-      if (response.success) {
-        onNext();
-      } else {
-        console.log("OTP verification failed");
-      }
+      // const response = await checkVerificationCode(email, data.pin);
+      // setMessage(response.message);
+      // if (response.success) {
+      //   onNext();
+      // } else {
+      //   console.log("OTP verification failed");
+      // }
+      console.log(data)
+      console.log(email)
+      onNext();
     } catch (error) {
       console.log("Error during OTP verification:", error);
       setMessage("An error occurred during verification.");
