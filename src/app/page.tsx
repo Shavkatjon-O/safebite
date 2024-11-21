@@ -1,21 +1,63 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ArrowRight, ArrowLeft } from "lucide-react";
+
+type Step = {
+  title: string;
+  description: string;
+  image: string;
+};
+
+const steps: Step[] = [
+  {
+    title: "Enjoy your meal time",
+    description: "Just relax and not overthink what to eat. This is in our side with our personalized meal plans just prepared and adapted to your needs.",
+    image: "/images/auth-image.svg",
+  },
+  {
+    title: "Control what you eat",
+    description: "Easily monitor your nutrition and stick to a healthy lifestyle with customized meal plans and insights.",
+    image: "/images/auth-image.svg",
+  },
+  {
+    title: "Find the perfect recipe",
+    description: "Discover the best recipes that define your everyday meals. Get step-by-step food preparation process and start your journey to wellness.",
+    image: "/images/auth-image.svg",
+  },
+  {
+    title: "Plan, eat, and thrive with us!",
+    description: "From meal planning to healthy eating, we are here to guide you toward a thriving and balanced daily routine.",
+    image: "/images/auth-image.svg",
+  },
+];
+
+const StepContent: React.FC<{ step: Step }> = ({ step }) => (
+  <div className="w-full space-y-6 text-center">
+    <Image
+      src={step.image}
+      alt={step.title}
+      className="w-full"
+      height={512}
+      width={512}
+    />
+    <h1 className="font-semibold text-xl">{step.title}</h1>
+    <p className="text-lg">{step.description}</p>
+  </div>
+);
 
 const Page = () => {
   const router = useRouter();
-
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleNextStep = () => {
-    if (currentStep < 3) {
+    if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      router.push('/sign-up');
+      router.push("/sign-up");
     }
   };
 
@@ -23,81 +65,21 @@ const Page = () => {
     if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
-  const progressPercentage = ((currentStep + 1) / 4) * 100;
-
   return (
     <div className="size-full p-6 flex flex-col justify-between items-center">
-      <Progress value={progressPercentage} className="w-full mb-6 [&>*]:bg-indigo-600 bg-indigo-200"  />
-
-      <div className="size-full flex flex-col items-center mb-6">
-        <h1 className='text-2xl mb-6'>Welcome to <span className='font-semibold text-indigo-700'>SafeBite</span></h1>
-        {currentStep === 0 && 
-          <div className='w-full space-y-6 text-center'>
-            <Image
-              src="/images/auth-image.svg"
-              alt="SafeBite"
-              className="w-full"
-              height={512}
-              width={512}
-            />
-            <h1 className='font-semibold text-xl'>Enjoy your meal time</h1>
-            <p className='text-lg'>Just relax and not overthink what to eat. This is in our side with our personalized meal plans just prepared and adapted to your needs.</p>
-          </div>
-        }
-        {currentStep === 1 && 
-          <div className='w-full space-y-6 text-center'>
-            <Image
-              src="/images/auth-image.svg"
-              alt="SafeBite"
-              className="w-full"
-              height={512}
-              width={512}
-            />
-            <h1 className='font-semibold text-xl'>Control what you eat</h1>
-            <p className='text-lg'>Easily monitor your nutrition  and stick to a healthy lifestyle with customized meal plans and insights.</p>
-          </div>
-        }
-        {currentStep === 2 && 
-          <div className='w-full space-y-6 text-center'>
-            <Image
-              src="/images/auth-image.svg"
-              alt="SafeBite"
-              className="w-full"
-              height={512}
-              width={512}
-            />
-            <h1 className='font-semibold text-xl'>Find the perfect recipe</h1>
-            <p className='text-lg'>Discover the best recipes that define your everyday meals. Get step-by-step food preparation process and start your journey to wellness.</p>
-          </div>
-        }
-        {currentStep === 3 && 
-          <div className='w-full space-y-6 text-center'>
-            <Image
-              src="/images/auth-image.svg"
-              alt="SafeBite"
-              className="w-full"
-              height={512}
-              width={512}
-            />
-            <h1 className='font-semibold text-xl'>Plan, eat, and thrive with us!</h1>
-            <p className='text-lg'>From meal planning to healthy eating, we are here to guide you toward a thriving and balanced daily routine.</p>
-          </div>
-        }
+      <div className="size-full flex flex-col items-center">
+        <h1 className="text-2xl">
+          Welcome to <span className="font-semibold text-indigo-700">SafeBite</span>
+        </h1>
+        <StepContent step={steps[currentStep]} />
       </div>
 
-      <div className="flex w-full justify-between">
-        <Button 
-          onClick={handlePreviousStep} 
-          disabled={currentStep === 0} 
-          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base rounded-2xl"
-        >
-          Previous
+      <div className="w-full mt-6 flex justify-between">
+        <Button onClick={handlePreviousStep} className="size-14" variant="outline">
+          <ArrowLeft />
         </Button>
-        <Button 
-          onClick={handleNextStep} 
-          className="w-1/4 h-14 bg-indigo-600 hover:bg-indigo-700 text-base rounded-2xl"
-        >
-          Next
+        <Button onClick={handleNextStep} className="size-14 bg-indigo-600 hover:bg-indigo-700">
+          <ArrowRight />
         </Button>
       </div>
     </div>
