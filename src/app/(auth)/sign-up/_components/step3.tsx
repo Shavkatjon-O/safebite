@@ -4,14 +4,26 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { SignUpDataType } from "../page";
 
-const Step3 = ({ onNext }: { onNext: () => void }) => {
+const Step3 = ({
+  onNext,
+  onData,
+}: {
+  onNext: () => void;
+  onData: (data: Partial<SignUpDataType>) => void;
+}) => {
   const [formData, setFormData] = useState({
     height: "",
     weight: "",
     gender: "",
     age: "",
   });
+
+  const genders = [
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,7 +41,14 @@ const Step3 = ({ onNext }: { onNext: () => void }) => {
   };
 
   const handleNext = () => {
-    if (formData.height && formData.weight && formData.gender && formData.age) {
+    const { height, weight, gender, age } = formData;
+    if (height && weight && gender && age) {
+      onData({
+        height: parseFloat(height),
+        weight: parseFloat(weight),
+        gender,
+        age: parseInt(age, 10),
+      });
       onNext();
     } else {
       alert("Please fill out all fields.");
@@ -40,7 +59,8 @@ const Step3 = ({ onNext }: { onNext: () => void }) => {
     <div className="max-w-md mx-auto py-6 px-4">
       <h2 className="text-lg font-bold mb-4">Physical Profile</h2>
       <p className="text-sm mb-6">
-        We use RMR (Resting Metabolic Rate) to estimate your calorie budget, which uses height, weight, gender, and age as inputs.
+        We use RMR (Resting Metabolic Rate) to estimate your calorie budget,
+        which uses height, weight, gender, and age as inputs.
       </p>
 
       <div className="space-y-4">
@@ -79,12 +99,11 @@ const Step3 = ({ onNext }: { onNext: () => void }) => {
             onValueChange={handleGenderChange}
             className="flex space-x-4"
           >
-            <RadioGroupItem value="Female" id="female">
-              Female
-            </RadioGroupItem>
-            <RadioGroupItem value="Male" id="male">
-              Male
-            </RadioGroupItem>
+            {genders.map((gender) => (
+              <RadioGroupItem key={gender.value} value={gender.value}>
+                {gender.label}
+              </RadioGroupItem>
+            ))}
           </RadioGroup>
         </div>
 

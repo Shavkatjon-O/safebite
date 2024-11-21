@@ -2,71 +2,116 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Loader2 } from "lucide-react";
+import { SignUpDataType } from "../page";
+import { getCalculatedCalorie } from "@/services/auth";
 
-const Step8 = ({ onNext }: { onNext: () => void }) => {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+const Step8 = ({
+  onNext,
+  onData,
+  userData,
+}: {
+  onNext: () => void;
+  onData: (data: Partial<SignUpDataType>) => void;
+  userData: Partial<SignUpDataType>;
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [calorieData, setCalorieData] = useState<{
+    calories: number;
+    carbs: number;
+    proteins: number;
+    fats: number;
+  } | null>(null);
 
-  const mealPlans = [
-    { label: "Three meals per day" },
-    { label: "Four meals per day" },
-    { label: "Full plan - five times per day" },
-    { label: "Just lunch and dinner" },
-    {
-      label: "Flexible",
-      tooltip: "Choose this if you don’t want a fixed number of meals.",
-    },
-  ];
+  const handleCalculate = async () => {
+    if (
+      !userData.age ||
+      !userData.gender ||
+      !userData.height ||
+      !userData.weight ||
+      !userData.activity_level ||
+      !userData.goal
+    ) {
+      alert("Please ensure all required fields are filled.");
+      return;
+    }
 
-  const handleSelectPlan = (plan: string) => {
-    setSelectedPlan(plan);
-  };
+    setLoading(true);
+    try {
+      const result = await getCalculatedCalorie(
+        userData.age,
+        userData.gender,
+        userData.height.toString(),
+        userData.weight.toString(),
+        userData.activity_level,
+        userData.goal
+      );
 
-  const handleNext = () => {
-    if (selectedPlan) {
-      onNext();
-    } else {
-      alert("Please select your meal plan before proceeding.");
+      console.log(result);
+
+      if (result?.success && result?.data?.data) {
+        const responseData = result.data.data.data;
+
+        console.log(responseData.data)
+
+        // Check and extract calorie and macro data safely
+        const calories = responseData.calories || 0;
+        const macros = responseData.macros || {};
+        const proteins = macros.protein || 0;
+        const carbs = macros.carb || 0;
+        const fats = macros.fat || 0;
+
+        // Save extracted data to state and pass to parent
+        const calculatedData = { calories, carbs, proteins, fats };
+        setCalorieData(calculatedData);
+        onData(calculatedData);
+      } else {
+        alert(result?.message || "Failed to calculate calories.");
+      }
+    } catch (error) {
+      console.error("Error calculating calories:", error);
+      alert("Failed to calculate calories. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">How often do you plan to eat per day?</h2>
+      <h2 className="text-lg font-bold mb-4">Calorie Calculation</h2>
+      <p className="text-sm mb-6">
+        Based on your details, we will calculate your recommended daily intake.
+      </p>
 
-      <div className="space-y-4">
-        {mealPlans.map((plan) => (
-          <div key={plan.label} className="relative">
-            <Button
-              variant="outline"
-              onClick={() => handleSelectPlan(plan.label)}
-              className={`w-full text-left ${
-                selectedPlan === plan.label ? "border-indigo-600 text-indigo-600" : ""
-              }`}
-            >
-              {plan.label}
-            </Button>
-            {plan.tooltip && (
-              <Tooltip>
-                <TooltipTrigger className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                  <span className="text-indigo-600 text-lg">?</span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{plan.tooltip}</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        ))}
-      </div>
+      {!calorieData ? (
+        <div className="text-center">
+          <Button
+            onClick={handleCalculate}
+            className="bg-indigo-600 text-white w-full"
+            disabled={loading}
+          >
+            {loading ? <Loader2 className="animate-spin" /> : "Calculate"}
+          </Button>
+        </div>
+      ) : (
+        <div className="p-4 border rounded-md bg-gray-50 space-y-4">
+          <h3 className="font-semibold">Your Calorie Details</h3>
+          <p>Calories: {calorieData.calories || 0} kcal</p>
+          <p>Carbs: {calorieData.carbs || 0}g</p>
+          <p>Proteins: {calorieData.proteins || 0}g</p>
+          <p>Fats: {calorieData.fats || 0}g</p>
+        </div>
+      )}
 
       <div className="flex justify-between items-center mt-6">
         <Button variant="outline" className="w-1/3">
           Previous
         </Button>
-        <Button onClick={handleNext} className="w-2/3 bg-indigo-600 text-white">
-          Next
-        </Button>
+        {calorieData && (
+          <Button onClick={onNext} className="w-2/3 bg-indigo-600 text-white">
+            Next
+          </Button>
+        )}
       </div>
     </div>
   );

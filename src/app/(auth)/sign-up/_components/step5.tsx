@@ -4,8 +4,15 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { SignUpDataType } from "../page";
 
-const Step5 = ({ onNext }: { onNext: () => void }) => {
+const Step5 = ({
+  onNext,
+  onData,
+}: {
+  onNext: () => void;
+  onData: (data: Partial<SignUpDataType>) => void;
+}) => {
   const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
   const [customAllergy, setCustomAllergy] = useState("");
 
@@ -37,8 +44,8 @@ const Step5 = ({ onNext }: { onNext: () => void }) => {
   };
 
   const handleNext = () => {
-    // Proceed only if at least one allergy is selected (optional validation)
-    if (selectedAllergies.length > 0 || customAllergy) {
+    if (selectedAllergies.length > 0) {
+      onData({ allergies: selectedAllergies.join(", ") }); // Pass allergies as a string to the parent
       onNext();
     } else {
       alert("Please select or add any ingredient allergies before proceeding.");
@@ -47,9 +54,12 @@ const Step5 = ({ onNext }: { onNext: () => void }) => {
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">Do you have any ingredient allergies?</h2>
+      <h2 className="text-lg font-bold mb-4">
+        Do you have any ingredient allergies?
+      </h2>
       <p className="text-sm mb-6">
-        To offer you the best tailored diet experience we need to know more information about you.
+        To offer you the best tailored diet experience, we need to know more
+        information about you.
       </p>
 
       <div className="flex flex-wrap gap-2 mb-4">
@@ -59,7 +69,9 @@ const Step5 = ({ onNext }: { onNext: () => void }) => {
             variant="outline"
             onClick={() => handleToggleAllergy(allergy)}
             className={`text-sm ${
-              selectedAllergies.includes(allergy) ? "bg-indigo-600 text-white" : ""
+              selectedAllergies.includes(allergy)
+                ? "bg-indigo-600 text-white"
+                : ""
             }`}
           >
             {allergy}
@@ -75,7 +87,10 @@ const Step5 = ({ onNext }: { onNext: () => void }) => {
           placeholder="If other, type here"
           className="flex-1"
         />
-        <Button onClick={handleAddCustomAllergy} className="bg-indigo-600 text-white">
+        <Button
+          onClick={handleAddCustomAllergy}
+          className="bg-indigo-600 text-white"
+        >
           Add
         </Button>
       </div>

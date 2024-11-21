@@ -2,27 +2,23 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { SignUpDataType } from "../page";
 
-const Step7 = ({ onNext }: { onNext: () => void }) => {
+const Step7 = ({
+  onNext,
+  onData,
+}: {
+  onNext: () => void;
+  onData: (data: Partial<SignUpDataType>) => void;
+}) => {
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
 
   const activityLevels = [
-    {
-      label: "Sedentary",
-      description: "Little to exercise with a desk job",
-    },
-    {
-      label: "Lightly Active",
-      description: "Light daily activity with some exercises 1-3 days a week",
-    },
-    {
-      label: "Moderately Active",
-      description: "Moderately active daily life with exercise 3-5 days a week",
-    },
-    {
-      label: "Very Active",
-      description: "Physically demanding lifestyle with hard exercises or sports 6-7 days a week",
-    },
+    { label: "Sedentary", value: "sedentary" },
+    { label: "Lightly Active", value: "lightly_active" },
+    { label: "Moderately Active", value: "moderately_active" },
+    { label: "Very Active", value: "very_active" },
+    { label: "Extremely Active", value: "extremely_active" },
   ];
 
   const handleSelectActivity = (activity: string) => {
@@ -31,6 +27,7 @@ const Step7 = ({ onNext }: { onNext: () => void }) => {
 
   const handleNext = () => {
     if (selectedActivity) {
+      onData({ activity_level: selectedActivity }); // Pass the selected activity level to the parent
       onNext();
     } else {
       alert("Please select your activity level before proceeding.");
@@ -44,16 +41,18 @@ const Step7 = ({ onNext }: { onNext: () => void }) => {
       <div className="space-y-4">
         {activityLevels.map((activity) => (
           <Button
-            key={activity.label}
+            key={activity.value}
             variant="outline"
-            onClick={() => handleSelectActivity(activity.label)}
+            onClick={() => handleSelectActivity(activity.value)}
             className={`w-full text-left ${
-              selectedActivity === activity.label ? "border-indigo-600 text-indigo-600" : ""
+              selectedActivity === activity.value
+                ? "border-indigo-600 text-indigo-600"
+                : ""
             }`}
           >
             <div>
               <div className="font-semibold">{activity.label}</div>
-              <div className="text-sm text-gray-600">{activity.description}</div>
+              {/* <div className="text-sm text-gray-600">{activity.description}</div> */}
             </div>
           </Button>
         ))}

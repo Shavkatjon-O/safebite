@@ -2,6 +2,7 @@
 
 import axios from "axios"
 import Cookies from "js-cookie"
+import coreApi from "@/lib/coreApi"
 
 const signIn = async (email: string, password: string) => {
   const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login/`, {
@@ -87,9 +88,33 @@ const signUp = async (
   }
 }
 
+const getCalculatedCalorie = async (
+  age: number,
+  gender: string,
+  height: string,
+  weight: string,
+  activity_level: string,
+  goal: string,
+) => {
+  const response = await coreApi.post("/users/calorie/", {
+    age: age,
+    gender: gender,
+    height: height,
+    weight: weight,
+    activity_level: activity_level,
+    goal: goal,
+  });
+  if (response.status === 200) {
+    return { success: true, message: "Calculated calorie", data: response.data };
+  } else {
+    return { success: false, message: "Failed to calculate calorie" };
+  }
+}
+
 export {
   signIn,
   sendVerificationCode,
   checkVerificationCode,
   signUp,
+  getCalculatedCalorie,
 }

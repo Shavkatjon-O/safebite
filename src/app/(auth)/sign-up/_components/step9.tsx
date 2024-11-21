@@ -1,75 +1,69 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { SignUpDataType } from "../page";
 
-const Step8 = ({ onNext }: { onNext: () => void }) => {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-
-  const mealPlans = [
-    { label: "Three meals per day" },
-    { label: "Four meals per day" },
-    { label: "Full plan - five times per day" },
-    { label: "Just lunch and dinner" },
-    {
-      label: "Flexible",
-      tooltip: "Choose this if you don’t want a fixed number of meals.",
-    },
-  ];
-
-  const handleSelectPlan = (plan: string) => {
-    setSelectedPlan(plan);
-  };
-
-  const handleNext = () => {
-    if (selectedPlan) {
-      onNext();
-    } else {
-      alert("Please select your meal plan before proceeding.");
-    }
-  };
-
+const Step9 = ({
+  onNext,
+  userData,
+}: {
+  onNext: () => void;
+  userData: Partial<SignUpDataType>;
+}) => {
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">How often do you plan to eat per day?</h2>
+      <h2 className="text-lg font-bold mb-4">Summary of Your Information</h2>
+      <p className="text-sm mb-6">
+        Please review the details below. If everything looks good, proceed to
+        complete the sign-up process.
+      </p>
 
       <div className="space-y-4">
-        {mealPlans.map((plan) => (
-          <div key={plan.label} className="relative">
-            <Button
-              variant="outline"
-              onClick={() => handleSelectPlan(plan.label)}
-              className={`w-full text-left ${
-                selectedPlan === plan.label ? "border-indigo-600 text-indigo-600" : ""
-              }`}
-            >
-              {plan.label}
-            </Button>
-            {plan.tooltip && (
-              <Tooltip>
-                <TooltipTrigger className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                  <span className="text-indigo-600 text-lg">?</span>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{plan.tooltip}</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        ))}
+        <div className="p-4 border rounded-md bg-gray-50">
+          <h3 className="font-semibold">Personal Information</h3>
+          <p>Email: {userData.email || "Not provided"}</p>
+          <p>
+            Name: {userData.first_name || "Not provided"}{" "}
+            {userData.last_name || "Not provided"}
+          </p>
+          <p>Age: {userData.age || "Not provided"}</p>
+          <p>Gender: {userData.gender || "Not provided"}</p>
+        </div>
+
+        <div className="p-4 border rounded-md bg-gray-50">
+          <h3 className="font-semibold">Physical Profile</h3>
+          <p>Height: {userData.height || "Not provided"} cm</p>
+          <p>Weight: {userData.weight || "Not provided"} kg</p>
+        </div>
+
+        <div className="p-4 border rounded-md bg-gray-50">
+          <h3 className="font-semibold">Lifestyle & Preferences</h3>
+          <p>Activity Level: {userData.activity_level || "Not provided"}</p>
+          <p>Goal: {userData.goal || "Not provided"}</p>
+          <p>Diet Type: {userData.diet_type || "Not provided"}</p>
+          <p>Allergies: {userData.allergies || "None"}</p>
+        </div>
+
+        <div className="p-4 border rounded-md bg-gray-50">
+          <h3 className="font-semibold">Calorie Details</h3>
+          <p>Calories: {userData.calories || "Not calculated"}</p>
+          <p>Carbs: {userData.carbs || "Not calculated"}g</p>
+          <p>Proteins: {userData.proteins || "Not calculated"}g</p>
+          <p>Fats: {userData.fats || "Not calculated"}g</p>
+        </div>
       </div>
 
       <div className="flex justify-between items-center mt-6">
         <Button variant="outline" className="w-1/3">
           Previous
         </Button>
-        <Button onClick={handleNext} className="w-2/3 bg-indigo-600 text-white">
-          Next
+        <Button onClick={onNext} className="w-2/3 bg-indigo-600 text-white">
+          Submit
         </Button>
       </div>
     </div>
   );
 };
 
-export default Step8;
+export default Step9;

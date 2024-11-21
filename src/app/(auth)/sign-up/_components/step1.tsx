@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -16,13 +16,21 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
-// import { sendVerificationCode } from "@/services/auth";
+import { SignUpDataType } from "../page";
 
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
+  first_name: z.string().min(1, "First name is required"),
+  last_name: z.string().min(1, "Last name is required"),
 });
 
-const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
+const Step1 = ({
+  onNext,
+  onData,
+}: {
+  onNext: () => void;
+  onData: (data: Partial<SignUpDataType>) => void;
+}) => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,22 +38,28 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
     resolver: zodResolver(Step1FormSchema),
     defaultValues: {
       email: "",
+      first_name: "",
+      last_name: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof Step1FormSchema>) => {
     setIsSubmitting(true);
     try {
+      // Simulated API call
       // const response = await sendVerificationCode(data.email);
       // setMessage(response.message);
-      // if (response.success) {
-      //   onNext(data.email);
-      // } else {
-      //   console.log("Sign-up failed");
-      // }
-      onNext(data.email);
+
+      // Mock success behavior
+      setMessage("Email verified successfully");
+      onData({
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+      }); // Pass data to the parent component
+      onNext(); // Proceed to the next step
     } catch (error) {
-      console.log("Error during sign-up:", error);
+      console.error("Error during sign-up:", error);
       setMessage("An error occurred during sign-up.");
     } finally {
       setIsSubmitting(false);
@@ -66,6 +80,42 @@ const Step1 = ({ onNext }: { onNext: (email: string) => void }) => {
                   <Input
                     type="email"
                     placeholder="Email"
+                    {...field}
+                    className="h-14"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="first_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="First Name"
+                    {...field}
+                    className="h-14"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Last Name"
                     {...field}
                     className="h-14"
                   />

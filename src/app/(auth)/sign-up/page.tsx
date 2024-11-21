@@ -10,14 +10,47 @@ import Step5 from "./_components/step5";
 import Step6 from "./_components/step6";
 import Step7 from "./_components/step7";
 import Step8 from "./_components/step8";
+import Step9 from "./_components/step9";
+
+export interface SignUpDataType {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  age: number;
+  gender: string;
+  height: number;
+  weight: number;
+  activity_level: string;
+  goal: string;
+  diet_type: string;
+  allergies: string;
+  calories: number;
+  carbs: number;
+  proteins: number;
+  fats: number;
+  pin?: string;
+}
 
 const Page = () => {
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState("");
+  const [userData, setUserData] = useState<Partial<SignUpDataType>>({});
 
-  const handleNextStep = (email?: string) => {
-    if (email) setEmail(email);
+  const handleNextStep = () => {
     setStep((prev) => prev + 1);
+  };
+
+  const handleData = (data: Partial<SignUpDataType>) => {
+    setUserData((prev) => ({
+      ...prev,
+      ...data,
+    }));
+  };
+
+  const handleRegister = () => {
+    console.log("Final user data:", userData);
+    // TODO: Add backend request logic here
+    // Example: await registerUserApi(userData);
   };
 
   const progressPercentage = (step / 9) * 100;
@@ -30,17 +63,31 @@ const Page = () => {
           Step {step} of 9
         </div>
       </div>
-
-      {step === 1 && <Step1 onNext={handleNextStep} />}
-      {step === 2 && <Step2 email={email} onNext={() => handleNextStep()} />}
-      {step === 3 && <Step3 onNext={handleNextStep} />}
-      {step === 4 && <Step4 onNext={handleNextStep} />}
-      {step === 5 && <Step5 onNext={handleNextStep} />}
-      {step === 6 && <Step6 onNext={handleNextStep} />}
-      {step === 7 && <Step7 onNext={handleNextStep} />}
-      {step === 8 && <Step8 onNext={handleNextStep} />}
-
-      {step === 9 && <div>Done</div>}
+      <div className="mt-6">
+        {step === 1 && <Step1 onNext={handleNextStep} onData={handleData} />}
+        {step === 2 && <Step2 onNext={handleNextStep} onData={handleData} />}
+        {step === 3 && <Step3 onNext={handleNextStep} onData={handleData} />}
+        {step === 4 && <Step4 onNext={handleNextStep} onData={handleData} />}
+        {step === 5 && <Step5 onNext={handleNextStep} onData={handleData} />}
+        {step === 6 && <Step6 onNext={handleNextStep} onData={handleData} />}
+        {step === 7 && <Step7 onNext={handleNextStep} onData={handleData} />}
+        {step === 8 && (
+          <Step8
+            onNext={handleNextStep}
+            onData={handleData}
+            userData={userData}
+          />
+        )}
+        {step === 9 && (
+          <Step9
+            onNext={() => {
+              handleRegister();
+              handleNextStep();
+            }}
+            userData={userData}
+          />
+        )}
+      </div>
     </div>
   );
 };

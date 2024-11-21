@@ -4,8 +4,15 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { SignUpDataType } from "../page";
 
-const Step6 = ({ onNext }: { onNext: () => void }) => {
+const Step6 = ({
+  onNext,
+  onData,
+}: {
+  onNext: () => void;
+  onData: (data: Partial<SignUpDataType>) => void;
+}) => {
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [customDiet, setCustomDiet] = useState("");
 
@@ -37,8 +44,8 @@ const Step6 = ({ onNext }: { onNext: () => void }) => {
   };
 
   const handleNext = () => {
-    // Proceed only if at least one diet is selected (optional validation)
-    if (selectedDiets.length > 0 || customDiet) {
+    if (selectedDiets.length > 0) {
+      onData({ diet_type: selectedDiets.join(", ") }); // Pass diets as a string to the parent
       onNext();
     } else {
       alert("Please select or add any specific diets before proceeding.");
@@ -49,7 +56,8 @@ const Step6 = ({ onNext }: { onNext: () => void }) => {
     <div className="max-w-md mx-auto py-6 px-4">
       <h2 className="text-lg font-bold mb-4">Do you follow any specific diets?</h2>
       <p className="text-sm mb-6">
-        To offer you the best tailored diet experience we need to know more information about you.
+        To offer you the best tailored diet experience, we need to know more
+        information about you.
       </p>
 
       <div className="flex flex-wrap gap-2 mb-4">
@@ -75,7 +83,10 @@ const Step6 = ({ onNext }: { onNext: () => void }) => {
           placeholder="If other, type here"
           className="flex-1"
         />
-        <Button onClick={handleAddCustomDiet} className="bg-indigo-600 text-white">
+        <Button
+          onClick={handleAddCustomDiet}
+          className="bg-indigo-600 text-white"
+        >
           Add
         </Button>
       </div>
