@@ -26,6 +26,9 @@ const Page = () => {
     <div className="size-full p-6">
       <div className="px-4">
         <Progress value={progressPercentage} className="w-full [&>*]:bg-indigo-600 bg-indigo-200" />
+        <div className="mt-2 text-center text-sm font-medium text-gray-700">
+          Step {step} of 9
+        </div>
       </div>
 
       {step === 1 && <Step1 onNext={handleNextStep} />}
@@ -37,9 +40,7 @@ const Page = () => {
       {step === 7 && <Step7 onNext={handleNextStep} />}
       {step === 8 && <Step8 onNext={handleNextStep} />}
 
-      {step === 9 && (
-        <div>Done</div>
-      )}
+      {step === 9 && <div>Done</div>}
     </div>
   );
 };
