@@ -36,16 +36,21 @@ const steps: Step[] = [
 ];
 
 const StepContent: React.FC<{ step: Step }> = ({ step }) => (
-  <div className="w-full space-y-6 text-center">
+  <div className="w-full space-y-8 flex flex-col items-center">
+    <h1 className="text-3xl mt-8 font-bold text-indigo-700 tracking-wide">
+      Welcome to <span className="text-purple-600">SafeBite</span>
+    </h1>
     <Image
       src={step.image}
       alt={step.title}
-      className="w-full"
+      className="rounded-3xl shadow-lg"
       height={512}
       width={512}
     />
-    <h1 className="font-semibold text-xl">{step.title}</h1>
-    <p className="text-lg">{step.description}</p>
+    <div className="border border-custom h-full p-6 rounded-xl shadow-md text-center">
+      <h2 className="text-2xl font-semibold text-gray-800">{step.title}</h2>
+      <p className="text-md text-gray-600 mt-4">{step.description}</p>
+    </div>
   </div>
 );
 
@@ -68,9 +73,6 @@ const Page = () => {
   return (
     <div className="size-full p-6 flex flex-col justify-between items-center">
       <div className="size-full flex flex-col items-center">
-        <h1 className="text-2xl">
-          Welcome to <span className="font-semibold text-indigo-700">SafeBite</span>
-        </h1>
         <StepContent step={steps[currentStep]} />
       </div>
 
@@ -78,7 +80,7 @@ const Page = () => {
         <Button onClick={handlePreviousStep} className="size-14" variant="outline">
           <ArrowLeft />
         </Button>
-        <Button onClick={handleNextStep} className="size-14 bg-indigo-600 hover:bg-indigo-700">
+        <Button onClick={handleNextStep} className="size-14 shadow-lg bg-indigo-600 hover:bg-indigo-700">
           <ArrowRight />
         </Button>
       </div>
