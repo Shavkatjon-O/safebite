@@ -20,6 +20,7 @@ import { SignUpDataType } from "../page";
 
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
 });
@@ -38,6 +39,7 @@ const Step1 = ({
     resolver: zodResolver(Step1FormSchema),
     defaultValues: {
       email: "",
+      password: "",
       first_name: "",
       last_name: "",
     },
@@ -54,6 +56,7 @@ const Step1 = ({
       setMessage("Email verified successfully");
       onData({
         email: data.email,
+        password: data.password,
         first_name: data.first_name,
         last_name: data.last_name,
       }); // Pass data to the parent component
@@ -80,6 +83,24 @@ const Step1 = ({
                   <Input
                     type="email"
                     placeholder="Email"
+                    {...field}
+                    className="h-14"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Password"
                     {...field}
                     className="h-14"
                   />

@@ -40,6 +40,10 @@ const Page = () => {
     setStep((prev) => prev + 1);
   };
 
+  const handlePreviousStep = () => {
+    setStep((prev) => prev - 1);
+  };
+
   const handleData = (data: Partial<SignUpDataType>) => {
     setUserData((prev) => ({
       ...prev,
@@ -47,10 +51,9 @@ const Page = () => {
     }));
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     console.log("Final user data:", userData);
-    // TODO: Add backend request logic here
-    // Example: await registerUserApi(userData);
+    // Add your backend registration logic here
   };
 
   const progressPercentage = (step / 9) * 100;
@@ -58,7 +61,10 @@ const Page = () => {
   return (
     <div className="size-full p-6">
       <div className="px-4">
-        <Progress value={progressPercentage} className="w-full [&>*]:bg-indigo-600 bg-indigo-200" />
+        <Progress
+          value={progressPercentage}
+          className="w-full [&>*]:bg-indigo-600 bg-indigo-200"
+        />
         <div className="mt-2 text-center text-sm font-medium text-gray-700">
           Step {step} of 9
         </div>
@@ -80,10 +86,8 @@ const Page = () => {
         )}
         {step === 9 && (
           <Step9
-            onNext={() => {
-              handleRegister();
-              handleNextStep();
-            }}
+            onPrevious={handlePreviousStep}
+            onComplete={handleRegister}
             userData={userData}
           />
         )}
