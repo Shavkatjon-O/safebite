@@ -15,9 +15,9 @@ const Step4 = ({
   const [selectedGoal, setSelectedGoal] = useState("");
 
   const goals = [
-    { value: "weight_loss", label: "Lose fat" },
+    { value: "lose_weight", label: "Lose weight" },
     { value: "maintain", label: "Maintain weight" },
-    { value: "muscle_gain", label: "Build muscle" },
+    { value: "gain_muscle", label: "Gain muscle" },
   ];
 
   const handleGoalSelect = (goal: string) => {

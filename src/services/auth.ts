@@ -59,7 +59,7 @@ const signUp = async (
   weight: number,
   activity_level: string,
   goal: string,
-  diet_type: string,
+  diet_types: string,
   allergies: string,
   calories: number,
   carbs: number,
@@ -67,30 +67,35 @@ const signUp = async (
   fats: number,
 ) => {
   const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/register/`, {
-    email,
-    password,
-    first_name,
-    last_name,
-    age,
-    gender,
-    height,
-    weight,
-    activity_level,
-    goal,
-    diet_type,
-    allergies,
-    calories,
-    carbs,
-    proteins,
-    fats,
-    }, {
-    headers: {
-      "Content-Type": "application/json",
-    }
+    email: email,
+    password: password,
+    first_name: first_name,
+    last_name: last_name,
+    age: age,
+    gender: gender,
+    height: height,
+    weight: weight,
+    activity_level: activity_level,
+    goal: goal,
+    diet_types: diet_types,
+    allergies: allergies,
+    calories: calories,
+    carbs: carbs,
+    proteins: proteins,
+    fats: fats,
   });
 
-  if (response.status === 201) {
+
+  console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+  console.log(response.data);
+  console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
+  if (response.status === 200) {
+    Cookies.set("accessToken", response.data.access);
+    Cookies.set("refreshToken", response.data.refresh);
+
     return { success: true, message: "Sign up successful" };
+
   } else {
     return { success: false, message: "Sign up failed" };
   }
