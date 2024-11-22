@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { SignUpDataType } from "../page";
+import { checkVerificationCode } from "@/services/auth";
 
 const Step2FormSchema = z.object({
   pin: z.string().length(6, {
@@ -31,9 +32,11 @@ const Step2FormSchema = z.object({
 const Step2 = ({
   onNext,
   onData,
+  email,
 }: {
   onNext: () => void;
   onData: (data: Partial<SignUpDataType>) => void;
+  email: string;
 }) => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,12 +51,15 @@ const Step2 = ({
   const onSubmit = async (data: z.infer<typeof Step2FormSchema>) => {
     setIsSubmitting(true);
     try {
-      // Simulated API Call
-      console.log("PIN:", data.pin);
-      setMessage("OTP verified successfully");
+      const response = await checkVerificationCode(email, data.pin);
 
-      onData({ pin: data.pin }); // Pass the pin to the parent
-      onNext(); // Move to the next step
+      if (response.success) {
+        onData({ pin: data.pin });
+        setMessage(response.message);
+        onNext()
+      } else {
+        setMessage(response.message);
+      }
     } catch (error) {
       console.error("Error during OTP verification:", error);
       setMessage("An error occurred during verification.");

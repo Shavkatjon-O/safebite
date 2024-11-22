@@ -52,7 +52,8 @@ const Step9 = ({
       weight: parseFloat(userData.weight.toString()), // Ensure weight is a float
       activity_level: userData.activity_level.toLowerCase(), // Match backend expected format
       goal: userData.goal.toLowerCase(), // Match backend expected format
-      diet_type: userData.diet_type,
+      // diet_type: userData.diet_type,
+      diet_types: "df92f408-4dd0-4990-be11-cadb4d15727e",
       allergies: userData.allergies,
       calories: parseFloat(userData.calories.toString()), // Ensure calories is a float
       carbs: parseFloat(userData.carbs.toString()), // Ensure carbs is a float
@@ -75,7 +76,7 @@ const Step9 = ({
         payload.weight,
         payload.activity_level,
         payload.goal,
-        payload.diet_type,
+        payload.diet_types,
         payload.allergies,
         payload.calories,
         payload.carbs,

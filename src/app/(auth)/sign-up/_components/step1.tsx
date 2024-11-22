@@ -17,6 +17,7 @@ import { z } from "zod";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { SignUpDataType } from "../page";
+import { sendVerificationCode } from "@/services/auth";
 
 const Step1FormSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -48,19 +49,19 @@ const Step1 = ({
   const onSubmit = async (data: z.infer<typeof Step1FormSchema>) => {
     setIsSubmitting(true);
     try {
-      // Simulated API call
-      // const response = await sendVerificationCode(data.email);
-      // setMessage(response.message);
-
-      // Mock success behavior
-      setMessage("Email verified successfully");
-      onData({
-        email: data.email,
-        password: data.password,
-        first_name: data.first_name,
-        last_name: data.last_name,
-      }); // Pass data to the parent component
-      onNext(); // Proceed to the next step
+      const response = await sendVerificationCode(data.email);
+      if (response.success) {
+        onData({
+          email: data.email,
+          password: data.password,
+          first_name: data.first_name,
+          last_name: data.last_name,
+        });
+        setMessage(response.message);
+        onNext();
+      } else {
+        setMessage(response.message);
+      }
     } catch (error) {
       console.error("Error during sign-up:", error);
       setMessage("An error occurred during sign-up.");

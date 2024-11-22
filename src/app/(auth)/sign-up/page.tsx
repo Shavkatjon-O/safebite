@@ -71,7 +71,7 @@ const Page = () => {
       </div>
       <div className="mt-6">
         {step === 1 && <Step1 onNext={handleNextStep} onData={handleData} />}
-        {step === 2 && <Step2 onNext={handleNextStep} onData={handleData} />}
+        {step === 2 && <Step2 onNext={handleNextStep} onData={handleData} email={userData.email || ""} />}
         {step === 3 && <Step3 onNext={handleNextStep} onData={handleData} />}
         {step === 4 && <Step4 onNext={handleNextStep} onData={handleData} />}
         {step === 5 && <Step5 onNext={handleNextStep} onData={handleData} />}
