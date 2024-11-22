@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 interface ProfileType {
   id: number;
@@ -60,6 +61,8 @@ const Page = () => {
 
   return (
     <div className="pt-16 pb-20 size-full overflow-y-scroll">
+      {Cookies.get("accessToken")}
+      {Cookies.get("accessToken")}
       <div className="">
         {isLoaded ? (
           error ? (

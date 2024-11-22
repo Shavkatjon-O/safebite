@@ -11,7 +11,14 @@ const signIn = async (email: string, password: string) => {
   });
 
   if (response.status === 200) {
-    const { access, refresh } = response.data;
+    const { access, refresh } = response.data.data;
+
+
+    console.log("------------------------------------------------")
+    console.log("access", access)
+    console.log("------------------------------------------------")
+    console.log("refresh", refresh)
+    console.log("------------------------------------------------")
 
     Cookies.set("accessToken", access);
     Cookies.set("refreshToken", refresh);
@@ -85,14 +92,13 @@ const signUp = async (
     fats: fats,
   });
 
-
   console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
   console.log(response.data);
   console.log("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 
   if (response.status === 200) {
-    Cookies.set("accessToken", response.data.access);
-    Cookies.set("refreshToken", response.data.refresh);
+    Cookies.set("accessToken", response.data.data.access);
+    Cookies.set("refreshToken", response.data.data.refresh);
 
     return { success: true, message: "Sign up successful" };
 
