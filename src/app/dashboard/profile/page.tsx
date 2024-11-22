@@ -61,8 +61,6 @@ const Page = () => {
 
   return (
     <div className="pt-16 pb-20 size-full overflow-y-scroll">
-      {Cookies.get("accessToken")}
-      {Cookies.get("accessToken")}
       <div className="">
         {isLoaded ? (
           error ? (
