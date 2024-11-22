@@ -60,7 +60,7 @@ const Step6 = ({
         information about you.
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-8">
         {diets.map((diet) => (
           <Button
             key={diet}
@@ -81,11 +81,11 @@ const Step6 = ({
           value={customDiet}
           onChange={(e) => setCustomDiet(e.target.value)}
           placeholder="If other, type here"
-          className="flex-1"
+          className="flex-1 h-14"
         />
         <Button
           onClick={handleAddCustomDiet}
-          className="bg-indigo-600 text-white"
+          className="bg-indigo-600 h-14 w-20 text-white"
         >
           Add
         </Button>
@@ -102,11 +102,8 @@ const Step6 = ({
         ))}
       </div>
 
-      <div className="flex justify-between items-center mt-6">
-        <Button variant="outline" className="w-1/3">
-          Previous
-        </Button>
-        <Button onClick={handleNext} className="w-2/3 bg-indigo-600 text-white">
+      <div className="flex justify-between items-center mt-6 gap-2">
+        <Button onClick={handleNext} className="w-1/2 h-14 bg-indigo-600 text-white">
           Next
         </Button>
       </div>

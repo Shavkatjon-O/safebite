@@ -73,7 +73,7 @@ const Step1 = ({
   return (
     <div className="size-full flex justify-center items-center px-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full mt-20 space-y-4">
           <FormField
             control={form.control}
             name="email"

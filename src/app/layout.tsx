@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-slate-200 antialiased h-screen flex justify-center items-center`}
       >
-        <div className="bg-white max-w-md size-full border-x">
+        <div className="bg-white max-w-md size-full border-x overflow-y-scroll">
           <TooltipProvider>
             {children}
             <Toaster />

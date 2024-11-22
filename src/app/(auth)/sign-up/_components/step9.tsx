@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { SignUpDataType } from "../page";
 import { signUp } from "@/services/auth";
+import { useRouter } from "next/navigation";
 
 const Step9 = ({
-  onPrevious,
   onComplete,
   userData,
 }: {
@@ -15,7 +15,9 @@ const Step9 = ({
   onComplete: () => void;
   userData: Partial<SignUpDataType>;
 }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async () => {
     if (
@@ -85,8 +87,8 @@ const Step9 = ({
       );
 
       if (response.success) {
-        alert("Registration successful!");
         onComplete();
+        router.push("/dashboard");
       } else {
         alert(response.message || "Registration failed. Please try again.");
       }
@@ -107,7 +109,7 @@ const Step9 = ({
       </p>
 
       <div className="space-y-4">
-        <div className="p-4 border rounded-md bg-gray-50">
+        <div className="p-4 border rounded-md border-custom shadow-md">
           <h3 className="font-semibold">Personal Information</h3>
           <p>Email: {userData.email || "Not provided"}</p>
           <p>
@@ -118,13 +120,13 @@ const Step9 = ({
           <p>Gender: {userData.gender || "Not provided"}</p>
         </div>
 
-        <div className="p-4 border rounded-md bg-gray-50">
+        <div className="p-4 border rounded-md border-custom shadow-md">
           <h3 className="font-semibold">Physical Profile</h3>
           <p>Height: {userData.height || "Not provided"} cm</p>
           <p>Weight: {userData.weight || "Not provided"} kg</p>
         </div>
 
-        <div className="p-4 border rounded-md bg-gray-50">
+        <div className="p-4 border rounded-md border-custom shadow-md">
           <h3 className="font-semibold">Lifestyle & Preferences</h3>
           <p>Activity Level: {userData.activity_level || "Not provided"}</p>
           <p>Goal: {userData.goal || "Not provided"}</p>
@@ -132,7 +134,7 @@ const Step9 = ({
           <p>Allergies: {userData.allergies || "None"}</p>
         </div>
 
-        <div className="p-4 border rounded-md bg-gray-50">
+        <div className="p-4 border rounded-md border-custom shadow-md">
           <h3 className="font-semibold">Calorie Details</h3>
           <p>Calories: {userData.calories || "Not calculated"}</p>
           <p>Carbs: {userData.carbs || "Not calculated"}g</p>
@@ -143,16 +145,8 @@ const Step9 = ({
 
       <div className="flex justify-between items-center mt-6">
         <Button
-          variant="outline"
-          className="w-1/3"
-          onClick={onPrevious}
-          disabled={loading}
-        >
-          Previous
-        </Button>
-        <Button
           onClick={handleSubmit}
-          className="w-2/3 bg-indigo-600 text-white"
+          className="w-full h-14 bg-custom hover:bg-indigo-800 text-white"
           disabled={loading}
         >
           {loading ? <Loader2 className="animate-spin" /> : "Submit"}

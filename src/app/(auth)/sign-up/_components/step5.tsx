@@ -54,7 +54,7 @@ const Step5 = ({
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">
+      <h2 className="text-3xl text-center text-custom font-bold mb-4">
         Do you have any ingredient allergies?
       </h2>
       <p className="text-sm mb-6">
@@ -62,7 +62,7 @@ const Step5 = ({
         information about you.
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="grid grid-cols-3 gap-3 mb-8">
         {allergies.map((allergy) => (
           <Button
             key={allergy}
@@ -85,11 +85,11 @@ const Step5 = ({
           value={customAllergy}
           onChange={(e) => setCustomAllergy(e.target.value)}
           placeholder="If other, type here"
-          className="flex-1"
+          className="flex-1 h-14"
         />
         <Button
           onClick={handleAddCustomAllergy}
-          className="bg-indigo-600 text-white"
+          className="bg-indigo-600 w-20 h-14 text-white"
         >
           Add
         </Button>
@@ -106,11 +106,11 @@ const Step5 = ({
         ))}
       </div>
 
-      <div className="flex justify-between items-center mt-6">
-        <Button variant="outline" className="w-1/3">
-          Previous
-        </Button>
-        <Button onClick={handleNext} className="w-2/3 bg-indigo-600 text-white">
+      <div className="flex justify-between items-center mt-6 gap-2">
+        <Button
+          onClick={handleNext}
+          className="w-1/2 h-14 bg-custom hover:bg-indigo-700 text-white"
+        >
           Next
         </Button>
       </div>

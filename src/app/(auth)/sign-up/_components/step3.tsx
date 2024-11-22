@@ -57,11 +57,7 @@ const Step3 = ({
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">Physical Profile</h2>
-      <p className="text-sm mb-6">
-        We use RMR (Resting Metabolic Rate) to estimate your calorie budget,
-        which uses height, weight, gender, and age as inputs.
-      </p>
+      <h2 className="text-3xl text-custom text-center mb-8 font-bold">Physical Profile</h2>
 
       <div className="space-y-4">
         <div>
@@ -75,6 +71,7 @@ const Step3 = ({
             value={formData.height}
             onChange={handleInputChange}
             placeholder="Enter your height in cm"
+            className="h-14"
           />
         </div>
 
@@ -89,6 +86,7 @@ const Step3 = ({
             value={formData.weight}
             onChange={handleInputChange}
             placeholder="Enter your weight in kg"
+            className="h-14"
           />
         </div>
 
@@ -100,9 +98,15 @@ const Step3 = ({
             className="flex space-x-4"
           >
             {genders.map((gender) => (
-              <RadioGroupItem key={gender.value} value={gender.value}>
-                {gender.label}
-              </RadioGroupItem>
+              <div key={gender.value} className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value={gender.value}
+                  id={`gender-${gender.value}`}
+                />
+                <label htmlFor={`gender-${gender.value}`} className="text-sm">
+                  {gender.label}
+                </label>
+              </div>
             ))}
           </RadioGroup>
         </div>
@@ -118,17 +122,18 @@ const Step3 = ({
             value={formData.age}
             onChange={handleInputChange}
             placeholder="Enter your age in years"
+            className="h-14"
           />
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-6">
-        <Button variant="outline" className="w-1/3">
+      <div className="flex justify-between items-center mt-6 gap-4">
+        <Button variant="outline" className="w-1/2 h-14">
           Previous
         </Button>
         <Button
           onClick={handleNext}
-          className="w-2/3 bg-indigo-600 text-white"
+          className="w-1/2 h-14 bg-indigo-600 text-white"
         >
           Next
         </Button>

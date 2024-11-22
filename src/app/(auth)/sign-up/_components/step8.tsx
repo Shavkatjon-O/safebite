@@ -78,8 +78,8 @@ const Step8 = ({
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">Calorie Calculation</h2>
-      <p className="text-sm mb-6">
+      <h2 className="text-3xl text-center text-custom font-bold mb-4">Calorie Calculation</h2>
+      <p className="mb-6 text-center">
         Based on your details, we will calculate your recommended daily intake.
       </p>
 
@@ -87,28 +87,42 @@ const Step8 = ({
         <div className="text-center">
           <Button
             onClick={handleCalculate}
-            className="bg-indigo-600 text-white w-full"
+            className="hover:bg-indigo-800 bg-custom h-14 text-white w-full"
             disabled={loading}
           >
             {loading ? <Loader2 className="animate-spin" /> : "Calculate"}
           </Button>
         </div>
       ) : (
-        <div className="p-4 border rounded-md bg-gray-50 space-y-4">
+        <div className="p-4 border rounded-md shadow-md border-custom space-y-4">
+        
           <h3 className="font-semibold">Your Calorie Details</h3>
-          <p>Calories: {calorieData.calories || 0} kcal</p>
-          <p>Carbs: {calorieData.carbs || 0}g</p>
-          <p>Proteins: {calorieData.proteins || 0}g</p>
-          <p>Fats: {calorieData.fats || 0}g</p>
+
+          <div className="flex justify-between border-b pb-2">
+            <p>Calories</p>
+            <span>{calorieData.calories || 0} kcal</span>
+          </div>
+
+          <div className="flex justify-between border-b pb-2">
+            <p>Carbs</p> 
+            <span>{calorieData.carbs || 0}g</span>
+          </div>
+
+          <div className="flex justify-between border-b pb-2">
+            <p>Proteins</p>
+            <span>{calorieData.proteins || 0}g</span>
+          </div>
+          
+          <div className="flex justify-between border-b pb-2">
+            <p>Fats</p>
+            <span>{calorieData.fats || 0}g</span>
+          </div>
         </div>
       )}
 
       <div className="flex justify-between items-center mt-6">
-        <Button variant="outline" className="w-1/3">
-          Previous
-        </Button>
         {calorieData && (
-          <Button onClick={onNext} className="w-2/3 bg-indigo-600 text-white">
+          <Button onClick={onNext} className="w-full h-14 text-base bg-custom hover:bg-indigo-800 text-white">
             Next
           </Button>
         )}

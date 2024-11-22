@@ -36,7 +36,7 @@ const Step7 = ({
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">How active are you?</h2>
+      <h2 className="text-2xl font-bold mb-8 text-center text-custom">How active are you?</h2>
 
       <div className="space-y-4">
         {activityLevels.map((activity) => (
@@ -44,7 +44,7 @@ const Step7 = ({
             key={activity.value}
             variant="outline"
             onClick={() => handleSelectActivity(activity.value)}
-            className={`w-full text-left ${
+            className={`w-full h-14 text-left ${
               selectedActivity === activity.value
                 ? "border-indigo-600 text-indigo-600"
                 : ""
@@ -58,11 +58,8 @@ const Step7 = ({
         ))}
       </div>
 
-      <div className="flex justify-between items-center mt-6">
-        <Button variant="outline" className="w-1/3">
-          Previous
-        </Button>
-        <Button onClick={handleNext} className="w-2/3 bg-indigo-600 text-white">
+      <div className="flex justify-between items-center mt-6 gap-2">
+        <Button onClick={handleNext} className="w-1/2 h-14 bg-custom hover:bg-indigo-800 text-white">
           Next
         </Button>
       </div>

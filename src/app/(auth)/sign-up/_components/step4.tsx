@@ -35,7 +35,7 @@ const Step4 = ({
 
   return (
     <div className="max-w-md mx-auto py-6 px-4">
-      <h2 className="text-lg font-bold mb-4">What is your goal?</h2>
+      <h2 className="text-3xl text-center text-custom font-bold mb-8">What is your goal?</h2>
 
       <div className="space-y-4">
         {goals.map((goal) => (
@@ -43,8 +43,8 @@ const Step4 = ({
             key={goal.value}
             onClick={() => handleGoalSelect(goal.value)}
             variant="outline"
-            className={`w-full text-left ${
-              selectedGoal === goal.value ? "border-indigo-600 text-indigo-600" : ""
+            className={`w-full text-left h-14 ${
+              selectedGoal === goal.value ? "border-custom text-custom" : ""
             }`}
           >
             {goal.label}
@@ -53,7 +53,7 @@ const Step4 = ({
       </div>
 
       <div className="flex justify-end items-center mt-6">
-        <Button onClick={handleNext} className="w-2/3 bg-indigo-600 text-white">
+        <Button onClick={handleNext} className="w-full h-14 bg-custom hover:bg-indigo-700 text-white">
           Next
         </Button>
       </div>
