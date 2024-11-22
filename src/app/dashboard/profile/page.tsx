@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Cookies from "js-cookie";
 
 interface ProfileType {
   id: number;
