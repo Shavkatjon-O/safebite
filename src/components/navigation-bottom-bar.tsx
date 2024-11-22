@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  House,
   CalendarCheck,
   Sparkles,
   ShoppingCart,
@@ -14,7 +13,6 @@ const NavigationBottomBar = () => {
   const currentRoute = usePathname();
 
   const menuItems = [
-    { href: "/dashboard", icon: House },
     { href: "/dashboard/meal-plans", icon: CalendarCheck },
     { href: "/dashboard/chats", icon: Sparkles },
     { href: "/dashboard/shopping-lists", icon: ShoppingCart },
@@ -29,7 +27,7 @@ const NavigationBottomBar = () => {
         const isActive = currentRoute === item.href;
 
         return (
-          <Link key={item.href} href={item.href} className="w-1/5 h-full flex justify-center items-center">
+          <Link key={item.href} href={item.href} className="w-1/4 h-full flex justify-center items-center">
             <div className="flex flex-col items-center">
               <div className={`p-4 rounded-full ${isActive ? 'bg-custom shadow-md' : ''}`}>
                 <Icon className={isActive ? "text-white" : "text-slate-600"} />
